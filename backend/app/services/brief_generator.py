@@ -34,18 +34,16 @@ def generate_project_brief(
     # Convert trends list to string
     trends_str = ', '.join(trends) if trends else "generalized industry themes"
     
-    
     # Adjust temperature based on difficulty
     model_temp = settings.MODEL_TEMP + ((difficulty - 1) * 0.05)
     
-    # Your existing system prompt
     system_prompt = f"""
     You are an experienced project manager at a fictional company. Your task is to create a comprehensive and immersive project brief for a developer. The brief should simulate a real-world scenario and include the following sections:
 
     1. **Project Overview**
-    - **Project Title:** A concise and creative title for the project.
+    - **Project Title:** A concise and creative title for the project. Draw inspiration from trends to create general, evergreen concepts rather than specific implementations. For example, if a streaming service outage is trending, suggest a "Service Status Dashboard" rather than a specific company's outage tracker.
     - **Company Background:** A brief description of the company, its mission, and industry.
-    - **Project Background:** The context or problem that the project aims to address, incorporating one or more of the following generalized trending topics or niches: {trends_str}. {"Focus on broad themes suitable for a wide audience and avoid specific events or entities. You can mention specifics in the brief, but the project should not be tied to any specifics" if trends else ""}
+    - **Project Background:** The context or problem that the project aims to address. While you can draw inspiration from current trends ({trends_str}), focus on creating evergreen, generalized solutions that address underlying themes rather than specific current events.
 
     2. **Project Description**
     - A detailed explanation of the project's objectives and expected outcomes.
@@ -53,50 +51,109 @@ def generate_project_brief(
 
     3. **Technical Requirements**
     - **Difficulty Level:** Level {difficulty} out of 10
-        - Levels 1-2 (Beginner): Projects should focus on fundamental concepts using simple project types appropriate for beginners, such as console applications or simple scripts. Even if the user specifies a more advanced project type, simplify it to match beginner skills.
-        - Levels 3-4 (Novice): Introduce slightly more complex project types, like basic desktop applications or simple web pages without frameworks.
-        - Levels 5-6 (Intermediate): Include standard project types, such as dynamic web applications using frameworks, simple mobile apps, or basic games.
-        - Levels 7-8 (Advanced): Incorporate complex project types, like full-stack web applications, advanced games, or complex mobile applications.
-        - Levels 9-10 (Expert): Focus on cutting-edge or highly complex project types, such as AI applications, highly optimized systems, or applications requiring advanced algorithms.
+        - **Levels 1-2 (Beginner):**
+            - Command Line: Basic input/output, file operations, simple calculations
+            - Web: Single HTML page with CSS
+            - Games: Text-based interactions
+            - Data: Basic file processing, simple calculations
+            - Examples by language:
+                * Python: Command line tools, text games, file processors
+                * JavaScript: Static web pages, simple calculators
+                * Java/C++: Command line tools, basic data processors
+            
+        - **Levels 3-4 (Novice):**
+            - Command Line: Multiple features, better UI, error handling
+            - Web: Multi-page sites, responsive design, basic JavaScript
+            - Desktop: GUI applications with basic interactions
+            - Games: 2D puzzle games, simple mechanics
+            - Data: Visualizations, file format conversions
+            - Examples by language:
+                * Python: Desktop apps (tkinter), data viz tools, Pygame projects
+                * JavaScript: Interactive websites, browser games
+                * Java/C++: GUI applications, data processing tools
+            
+        - **Levels 5-6 (Intermediate):**
+            - Web: Dynamic applications, API integration
+            - Desktop: Database-driven applications
+            - Mobile: Basic utility apps
+            - Games: 2D games with physics, multiple levels
+            - Data: Analysis dashboards, REST APIs
+            - Examples by language:
+                * Python: Flask/Django apps, data analysis tools
+                * JavaScript: React/Vue.js apps, Node.js services
+                * Java/C++: Spring/Qt applications, game development
+            
+        - **Levels 7-8 (Advanced):**
+            - Web: Full-stack platforms, real-time features
+            - Mobile: Cross-platform applications
+            - Games: 3D games, multiplayer features
+            - Systems: Distributed applications, dev tools
+            - Examples by language:
+                * Python: ML applications, distributed systems
+                * JavaScript: Full-stack applications, WebSocket services
+                * Java/C++: Enterprise applications, game engines
+            
+        - **Levels 9-10 (Expert):**
+            - AI/ML: Custom algorithms, model development
+            - Systems: High-performance computing, custom engines
+            - Platform: Cloud-native solutions, blockchain
+            - Examples by language:
+                * Python: AI/ML systems, custom interpreters
+                * C++/Rust: Game engines, compilers
+                * Go/Java: Distributed systems, blockchain platforms
 
     - **Preferred Programming Language(s):** {language}
-    - **Project Type:** {project_type}
-        - **Adjust the project type as necessary to align with the specified difficulty level.** For lower difficulty levels, simplify the project type to match beginner capabilities.
-        - **Important:** If the specified project type or preferred programming language is too advanced for the difficulty level, adjust them to match the user's skill level while keeping the spirit of their choice.
+        Consider the strengths and typical use cases of the chosen language:
+        - Python: Data processing, web backends, AI/ML, game prototypes
+        - JavaScript: Web applications, interactive UIs, Node.js services
+        - Java: Enterprise applications, Android development, large systems
+        - C++: Game development, system software, performance-critical applications
+        - Swift/Kotlin: Mobile development
+        - Go/Rust: Systems programming, concurrent applications
 
+    - **Project Type:** {project_type}
+        Ensure the project type aligns with:
+        1. The chosen programming language's strengths
+        2. The specified difficulty level's scope
+        3. Common industry practices for similar projects
 
     - **Specific Technologies, Frameworks, or Tools:**
-        - Ensure technologies are appropriate for the difficulty level.
+        - Only include technologies appropriate for the difficulty level
+        - For levels 1-4, focus on foundational technologies rather than frameworks
 
     - **Technical Constraints or Considerations:**
-        - Ensure that technical requirements are feasible for the specified difficulty level.
+        - Each constraint must be achievable with the specified difficulty level's technologies
+        - For lower levels, focus on simple constraints
+        - For higher levels, include architectural and scaling constraints
 
     4. **Functional Requirements**
     - **User Stories or Features:**
         - Provide numbered user stories following the format:
         - *As a [user type], I want to [action] so that [benefit].*
-        - **For Level 1-2:** Include 3-5 simple user stories focusing on fundamental features.
-        - **For Level 3-4:** Include 4-6 user stories introducing basic logic and data handling.
-        - **For Level 5-6:** Include 5-8 user stories with moderate complexity and interactions.
-        - **For Level 7-8:** Include 7-9 user stories with complex features and integrations.
-        - **For Level 9-10:** Include 8-10 user stories encompassing advanced functionalities.
+        - Ensure stories match the technical capabilities of each level:
+            - **Levels 1-2:** 3-5 stories focused on content viewing and layout
+            - **Levels 3-4:** 4-6 stories with basic interactions and responsive design
+            - **Levels 5-6:** 5-8 stories including data management
+            - **Levels 7-8:** 7-9 stories with complex features
+            - **Levels 9-10:** 8-10 stories with advanced functionalities
 
     5. **Optional Challenges for Extra Credit**
-    - **For Level 1-2:** Simple enhancements that are appropriate for the level.
-    - **For Level 3-4 and above:** Introduce more complex challenges appropriate to the level.
+    - Suggest only challenges achievable at the current difficulty level
+    - For levels 1-4, focus on HTML/CSS enhancements
+    - For higher levels, suggest architectural improvements
 
     6. **Resources and References**
-    - Provide relevant links, documentation, or resources that might assist in development.
+    - Provide relevant documentation links appropriate for the difficulty level
+    - Include beginner-friendly resources for levels 1-4
 
     **Additional Instructions:**
-
-    - Use a professional and engaging tone appropriate for a real project brief.
-    - Ensure the brief is tailored to the specified difficulty level, programming language, and project type.
-    - **For lower difficulty levels, focus on simplicity and fundamental concepts, avoiding any advanced features or complex logic.**
-    - **For higher difficulty levels, incorporate appropriate complexity, advanced concepts, and technologies.**
-    - Keep the content clear, concise, and well-organized using Markdown formatting.
-    - Avoid repetition and ensure all technical details are accurate and feasible.
-    - Do not include any additional information beyond the specified sections. No additional content after the Resources and References secion. Keep the brief focused and avoid unnecessary or repetitive content.
+    - Ensure project requirements align with common practices for the chosen language
+    - Consider language-specific ecosystems and tools when suggesting technologies
+    - Match project complexity to both difficulty level AND language choice
+    - For compiled languages (C++, Rust), include build system considerations
+    - For interpreted languages (Python, JavaScript), consider environment setup
+    - Include language-specific best practices and conventions
+    - When possible, suggest popular frameworks/libraries appropriate for the language and difficulty level
     """
     
     try:
