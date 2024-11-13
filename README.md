@@ -16,6 +16,9 @@ go-develop-something/
 └── frontend/              # React frontend
     ├── src/
     │   ├── components/    # React components
+    │   │   ├── BriefGenerator/     # Main form component
+    │   │   ├── BriefDisplay/       # Brief display component
+    │   │   └── DifficultySelector/ # Difficulty selection cards
     │   ├── services/      # API services
     │   └── styles/        # Global styles
     └── package.json
@@ -53,8 +56,8 @@ pip install -r requirements.txt
 ENVIRONMENT=development
 API_V1_STR=/api/v1
 OPENAI_API_KEY=your_openai_api_key_here
-MODEL_VERSION=gpt-4
-MODEL_TEMP=0.7
+MODEL_VERSION=gpt-4o
+MODEL_TEMP=0.5
 CORS_ORIGINS=http://localhost:5173
 ```
 
@@ -88,15 +91,25 @@ The frontend application will be available at `http://localhost:5173`
 ## Features
 
 - Dynamic project brief generation based on:
-  - Difficulty level (1-10)
-  - Programming language
+  - Difficulty level (1-10) with intuitive card-based selection
+  - Programming language with autocomplete suggestions
   - Project type
   - Current trends (optional)
-- Modern, responsive UI
+- Modern, responsive UI built with:
+  - React + Vite
+  - Tailwind CSS
+  - shadcn/ui components
+- Interactive components:
+  - Card-based difficulty selector with live level adjustment
+  - Language autocomplete with popular suggestions
+  - Dynamic project type options based on difficulty
+- Brief display features:
+  - Markdown rendering
+  - Copy to clipboard
+  - Download as markdown
+  - Share functionality
 - Local storage for saving generated briefs
 - Real-time form validation
-- Markdown rendering for briefs
-- Copy and download functionality for briefs
 
 ## API Documentation
 
@@ -133,6 +146,10 @@ The backend API documentation is available at `http://localhost:8000/docs` when 
 - Uses Tailwind CSS for styling
 - shadcn/ui components
 - Markdown rendering support
+- Component architecture:
+  - `BriefGenerator`: Main form component with difficulty selection
+  - `DifficultySelector`: Card-based difficulty level selection
+  - `BriefDisplay`: Renders generated briefs with actions
 
 ## Contributing
 
